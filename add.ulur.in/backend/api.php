@@ -194,7 +194,7 @@ if(isset($_SERVER['HTTP_ORIGIN'])){
 if(isset($err)){
 	http_response_code(400);
 	$data = ['error' => $err];
-}else if(isset($user)){
+}else if(isset($_GET['user'])){
 	$data = ['data' => $list];					//format respon json view data
 }else{
 	$data = ['shortlink' => $shortlink];		//format respon json submit data
