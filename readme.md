@@ -1,8 +1,6 @@
 # ulur in
 Simple URL shortener for apache
 
-By : Naufal Irfan
-
 https://ulur.in
 
 # Installing
