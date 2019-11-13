@@ -1,0 +1,130 @@
+<!DOCTYPE html><html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Free URL shortener, simple and easy">
+	<meta name="keywords" content="url,Shortener,ulur.in,ulurin,ulur,shortlink">
+	<meta name="theme-color" content="#181818">
+	<title>API Docss | Naufal Irfan Shortlink test</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript" src="assets/js/main.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?autoload=true&amp;skin=desert&amp;lang=css" defer></script>
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+	</head>
+	<body onload='check()'>
+	<style>
+body {
+	color:white;
+	min-width:1220px;
+}
+pre {
+	width:350px;
+	padding:20px;
+}
+p {
+	font-size:17px;
+}
+.columnleft {
+  float: left;
+  width: 400px;
+}
+.columnright {
+  margin-left: 430px;
+}
+	</style>
+
+	<div id="nav" class="topnav">
+		<a class="icon" onclick="menu()">
+			Menu<i class="glyphicon glyphicon-menu-hamburger"></i>
+		</a>
+		<a href="/">Home</a>
+		<a href="user">User Panel</a>
+		<a href="register">Register</a>
+		<a class="active" href="dev.html">API Docs</a>
+		<div id="toptext"></div>
+		<div class="login-container"></div>
+	</div>
+
+	<div style="margin-left:10%;margin-top:50px">
+		<div class="columnleft">
+			<h2>Methods</h2>
+			<p>HTTP/S REQUEST POST</p>
+			<p>Contoh pemanggilan sederhana:</p>
+			<pre class="prettyprint">
+POST http://add.ulur.in/api
+
+body {
+	url: "http://www.gtaind.com"
+}</pre>
+			<p>Contoh pemanggilan dengan unique ID:</p>
+			<pre class="prettyprint">
+POST http://add.ulur.in/api
+
+body {
+	url: "http://www.gtaind.com",
+	random: "false",
+	id: "webGTA"
+}</pre>
+			<h2>API response</h2>
+			<p>Contoh success response :</p>
+			<pre class="prettyprint">
+Status Code : 200 OK
+
+{
+	"shortlink" : "ulur.in/OTNmY"
+}</pre>
+			<p>Contoh failed response :</p>
+<pre class="prettyprint">
+Status Code : 400 Bad Request
+
+{
+	"error": "URL Tidak Valid!"
+}</pre>
+<!--
+				<p>Contoh pemakaian json history data :</p>
+			<pre class="prettyprint">
+//$result = response from API
+
+$raw =  json_decode($result, true);
+foreach($raw['data'] as $item) {
+	echo $item['id'];
+	echo $item['url'];
+	echo $item['hits'];
+	echo $item['date'];
+}
+</pre>
+-->
+		</div>
+		<div class="columnright">
+			<br>
+			<h2>API Parameters</h2>
+			<p><b>url : </b>URL yang akan di singkat.</p>
+			<p><b>random : </b>bool, apakah shortlink ID dibuat random (default=true).</p>
+			<p><b>id : </b>ID unique jika memilih tidak random (alphanumeric). (default=empty)</p>
+			<p><b>view : </b>'public' untuk melihat history publik, username untuk private history (default=empty)</p>
+			<p><b>token : </b>secret token untuk mengakses private history (default=empty)</p>
+			<br>
+			<h2>Response</h2>
+			<p><b>shortlink : </b>hasil shortlink</p>
+			<p><b>data : </b>JSON data, history user, tiap item mempunyai : id, url, hits, date</p>
+			<p><b>error : </b>pesan error, berikut daftarnya:</p>
+			<p>"Spam terdeteksi!" = API access limit reached, tunggu sekitar 3 menit</p>
+			<p>"Authorization failed!" = invalid token saat request private history</p>
+			<p>"URL Tidak Valid!" = url bukan url yang valid</p>
+			<p>"URL terlalu panjang!" = url melebihi batas (620 chars)</p>
+			<p>"URL sudah shorturl!" = url yang dimasukkan berisi ulur.in</p>
+			<p>"ID terlalu panjang!" = id melebihi batas (30 chars)</p>
+			<p>"ID terlalu pendek!" = tidak ada id meski parameter random=false</p>
+			<p>"Unique ID sudah dipakai!" = id sudah digunakan url lain</p>
+			<p>"Gagal membuat record di database" = kesalahan internal, hubungi admin</p>
+			<p>"no request" = POST body kosong</p>
+			<br>
+			<h2>API Limits</h2>
+			<p>Max 10 requests per 3 menit (subject to change)</p>
+		</div>
+	</div>
+	<iframe src="http://add.ulur.in/test" width="100%" height="590px" frameBorder="0"></iframe>
+	</body>
+</html>

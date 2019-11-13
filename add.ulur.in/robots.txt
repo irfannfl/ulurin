@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: http://add.ulur.in/sitemap.xml

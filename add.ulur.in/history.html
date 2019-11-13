@@ -1,0 +1,79 @@
+<!DOCTYPE html><html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Free URL shortener, simple and easy">
+    <meta name="keywords" content="url,Shortener,ulur.in,ulurin,ulur,shortlink">
+	<meta name="theme-color" content="#181818">
+	<title>Public History | ULUR.IN Shortener</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/js/main.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+</head>
+
+<body onload='check()'>
+    <!-- Top navigation menu -->
+    <div id="nav" class="topnav">
+        <a class="icon" onclick="menu()">
+			Menu<i class="glyphicon glyphicon-menu-hamburger"></i>
+		</a>
+        <a class="active" href="/">Home</a>
+        <a href="user">User Panel</a>
+        <a href="register">Register</a>
+        <a href="dev.html">API Docs</a>
+        <div id="toptext"></div>
+        <div class="login-container"></div>
+    </div>
+    
+    <!-- Middle body text -->
+    <div class="middle" style='height:70px;margin-top:90px'>
+        <div id="alret">
+            This is public history (from anonymous user), Create private history by Log-in, you can aslo edit & delete shortlink in <a href="/user">user panel</a>
+        </div>
+    </div>
+
+    <div style="width:100%;max-width:800px;margin:0px auto;margin-bottom:10px">
+        <button class="btn btn-primary" onclick="location.href='/'"><i class="glyphicon glyphicon-chevron-left"></i> Back</button>
+    </div>
+
+    <!-- Shortlink history table -->
+    <div class="table-responsive">
+        <table id="usertable" class="table table-sm table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Shorturl</th>
+                    <th scope="col">hits</th>
+                    <th scope="col">date (UTC)</th>
+                </tr>
+            </thead>
+
+            <tbody id='tabelnya'>
+                <script>
+                    $.ajax({
+                        url: getapi(),
+                        type: "POST",
+                        data: {
+                            view: 'public',
+                        },
+                        success:function(data){
+                            var html = '';
+                            for(var n in data.data) {
+                                html += '<tr><td><a href="' + data.data[n].url + '"> ulur.in/' + data.data[n].id + '</a></td>';
+                                html += '<td>' + data.data[n].hits + '</td>';
+                                html += '<td>' + data.data[n].date + '</td>';
+                            }
+                            $('#tabelnya').html(html);
+                        },
+                        error:function(xhr){
+                            var err = eval("(" + xhr.responseText + ")");
+                            $('#tabelnya').html(err.error);
+                        }
+                    });
+                </script>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
