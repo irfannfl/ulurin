@@ -6,7 +6,7 @@
     <meta name="description" content="Free URL shortener, simple and easy">
 	<meta name="keywords" content="url,Shortener,ulur.in,ulurin,ulur,shortlink">
 	<meta name="theme-color" content="#181818">
-	<title>API Docss | Naufal Irfan Shortlink test</title>
+	<title>API Docs | ULUR.IN Shortener</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script type="text/javascript" src="assets/js/main.js"></script>
@@ -49,8 +49,8 @@ p {
 
 	<div style="margin-left:10%;margin-top:50px">
 		<div class="columnleft">
-			<h2>Methods</h2>
-			<p>HTTP/S REQUEST POST</p>
+			<br>
+			<h2>POST</h2>
 			<p>Contoh pemanggilan sederhana:</p>
 			<pre class="prettyprint">
 POST http://add.ulur.in/api
@@ -67,7 +67,6 @@ body {
 	random: "false",
 	id: "webGTA"
 }</pre>
-			<h2>API response</h2>
 			<p>Contoh success response :</p>
 			<pre class="prettyprint">
 Status Code : 200 OK
@@ -80,7 +79,26 @@ Status Code : 200 OK
 Status Code : 400 Bad Request
 
 {
-	"error": "URL Tidak Valid!"
+	"error": "Unique ID sudah dipakai!"
+}</pre>
+			<h2>GET</h2>
+			<p>Contoh pemanggilan sederhana:</p>
+			<pre class="prettyprint">
+GET http://add.ulur.in/api?user=public
+</pre>
+			<p>Contoh success response :</p>
+			<pre class="prettyprint">
+Status Code : 200 OK
+
+{
+	"data" : {...}
+}</pre>
+			<p>Contoh failed response :</p>
+<pre class="prettyprint">
+Status Code : 400 Bad Request
+
+{
+	"error": "Spam terdeteksi!"
 }</pre>
 <!--
 				<p>Contoh pemakaian json history data :</p>
@@ -99,19 +117,17 @@ foreach($raw['data'] as $item) {
 		</div>
 		<div class="columnright">
 			<br>
-			<h2>API Parameters</h2>
+			<h2>Method</h2>
+			<p>HTTP/S REQUEST <mark><b>POST</b></mark></p>
+			<h2>Parameters</h2>
 			<p><b>url : </b>URL yang akan di singkat.</p>
 			<p><b>random : </b>bool, apakah shortlink ID dibuat random (default=true).</p>
 			<p><b>id : </b>ID unique jika memilih tidak random (alphanumeric). (default=empty)</p>
-			<p><b>view : </b>'public' untuk melihat history publik, username untuk private history (default=empty)</p>
-			<p><b>token : </b>secret token untuk mengakses private history (default=empty)</p>
 			<br>
 			<h2>Response</h2>
 			<p><b>shortlink : </b>hasil shortlink</p>
-			<p><b>data : </b>JSON data, history user, tiap item mempunyai : id, url, hits, date</p>
 			<p><b>error : </b>pesan error, berikut daftarnya:</p>
 			<p>"Spam terdeteksi!" = API access limit reached, tunggu sekitar 3 menit</p>
-			<p>"Authorization failed!" = invalid token saat request private history</p>
 			<p>"URL Tidak Valid!" = url bukan url yang valid</p>
 			<p>"URL terlalu panjang!" = url melebihi batas (620 chars)</p>
 			<p>"URL sudah shorturl!" = url yang dimasukkan berisi ulur.in</p>
@@ -119,12 +135,26 @@ foreach($raw['data'] as $item) {
 			<p>"ID terlalu pendek!" = tidak ada id meski parameter random=false</p>
 			<p>"Unique ID sudah dipakai!" = id sudah digunakan url lain</p>
 			<p>"Gagal membuat record di database" = kesalahan internal, hubungi admin</p>
-			<p>"no request" = POST body kosong</p>
+			<p>"no request" = tidak ada request data</p>
+			<br>
+			<h2>Method</h2>
+			<p>HTTP/S REQUEST <mark><b>GET</b></mark></p>
+			<h2>Parameters</h2>
+			<p><b>user : </b>'public' untuk melihat history publik, username untuk private history</p>
+			<p><b>date : </b>history sebelum waktu, biasa untuk pagging (default=3019-11-02 00:00:00)</p>
+			<p><b>token : </b>secret token untuk mengakses private history (default=empty)</p>
+			<br>
+			<h2>Response</h2>
+			<p><b>data : </b>JSON data, history user latest 20 item before date (structure lihat di API tester)</p>
+			<p><b>error : </b>pesan error, berikut daftarnya:</p>
+			<p>"Spam terdeteksi!" = API access limit reached, tunggu sekitar 3 menit</p>
+			<p>"Authorization failed!" = invalid token saat request private history</p>
+			<p>"no request" = tidak ada request data</p>
 			<br>
 			<h2>API Limits</h2>
-			<p>Max 10 requests per 3 menit (subject to change)</p>
+			<p>Max 20 requests per 3 menit</p>
 		</div>
 	</div>
-	<iframe src="http://add.ulur.in/test" width="100%" height="590px" frameBorder="0"></iframe>
+	<iframe src="/test/" width="100%" height="590px" frameBorder="0"></iframe>
 	</body>
 </html>

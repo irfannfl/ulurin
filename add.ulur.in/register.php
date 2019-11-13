@@ -23,6 +23,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $username_err = "Tolong masukan username.";
         } else{
             $username = trim($_POST["username"]);
+            $username = preg_replace('/[^a-z0-9]/si', '', $username);
 
             $query = $db->prepare('SELECT id FROM users WHERE username = ?');
             $query->bind_param('s', $username);
@@ -109,7 +110,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <div style='text-align:center'>
             <?php 
 				if($success==true){
-					echo	"Registration success!, now you can login";
+					echo	"Registration success!, now you can login<br>Your username is : " . $username;
 					exit;
 				}
 			?>
@@ -120,8 +121,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </div>
         <form style="text-align:left" onsubmit="regis.disabled = true" action="register" method="post">
             <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
+                <label>Username (alphanumeric)</label>
+                <input type="text" name="username" class="form-control" value="<?php echo $username; ?>" required>
                 <span class="help-block" style="color:#ff7575"><?php echo $username_err; ?></span>
             </div>    
             <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">

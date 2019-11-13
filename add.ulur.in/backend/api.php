@@ -3,7 +3,7 @@ session_start();
 include "ratelimiter.php";
 
 $rateLimiter = new RateLimiter($_SERVER["REMOTE_ADDR"]);
-$limit = 10;			//	limit jumlah request per $minutes
+$limit = 20;			//	limit jumlah request per $minutes
 $minutes = 3;			//	periode pengecekan dalam menit
 try {
 	$rateLimiter->limitRequestsInMinutes($limit, $minutes);
@@ -11,22 +11,27 @@ try {
 	$err = 'Spam terdeteksi!'; goto end;
 }
 
-if (isset($_POST['view'])) {
+if (isset($_GET['user'])) {
 
 	//=============== Bagian view data =============== (Public API)
-	$view = $_POST['view'];
+	$user = $_GET['user'];
 
 	//Validasi authorisasi saat melihat history selain public
-	if($view != 'public'){
-		if ($_POST['token'] != 'TOKEN'){
+	if($user != 'public'){
+		if ($_GET['token'] != 'TOKEN'){
 			$err = 'Authorization failed!'; goto end;
 		}
+	}
+	if (isset($_GET['date'])){
+		$dateinput = $_GET['date'];
+	}else{
+		$dateinput = "3019-11-02 00:00:00";		//default
 	}
 
 	require "sql.php";
 	
-	$query = $db->prepare('SELECT id, url, date, hits FROM redirect WHERE user = ? ORDER BY date DESC');
-	$query->bind_param('s', $view);
+	$query = $db->prepare('SELECT id, url, date, hits FROM redirect WHERE user = ? AND date < ? ORDER BY date DESC LIMIT 20');
+	$query->bind_param('ss', $user, $dateinput);
 	if ($query->execute()) {
 		$query->bind_result($id, $url, $date, $hits);
 
@@ -40,6 +45,10 @@ if (isset($_POST['view'])) {
 	}
 	$query->close();
 	$db->close();
+
+	if (empty($list)) {
+		$err = "no more data"; goto end;
+	}
 
 } else if (isset($_POST['delete'])) {
 
@@ -185,11 +194,9 @@ if(isset($_SERVER['HTTP_ORIGIN'])){
 if(isset($err)){
 	http_response_code(400);
 	$data = ['error' => $err];
+}else if(isset($user)){
+	$data = ['data' => $list];					//format respon json view data
 }else{
-	if(isset($view)){
-		$data = ['data' => $list];					//format respon json view data
-	}else{
-		$data = ['shortlink' => $shortlink];		//format respon json submit data
-	}
+	$data = ['shortlink' => $shortlink];		//format respon json submit data
 }
 echo json_encode($data);

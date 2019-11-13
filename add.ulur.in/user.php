@@ -77,7 +77,7 @@ if(isset($_SESSION["username"])){
 	<div class="middle" style="margin-top:80px;">
 		<div style="text-align: center">
 			<?php 
-				if(!isset($user)){
+				if(!isset($user)){	//not log-in
 					echo	"You need to log-in before viewing this page!<br>
 							Don't have account? you can <a href='register'>register</a> for free.<br><br>
 							or use this demo account<br>
@@ -85,8 +85,8 @@ if(isset($_SESSION["username"])){
 					exit;
 				}
 			?>
-			Welcome Home <?php echo $user ?>
-			<br>(Your shortlink created here will be private) <!-- <a href="http://ulur.in/me">About me</a>-->
+			<h2>user panel <?php echo $user ?></h2>
+			<br>Shortlink created here will <b>not</b> recorded in public history <!-- <a href="http://ulur.in/me">About me</a>-->
 			<br><br><br>
 		</div>
 		<div class="form-group">
@@ -109,29 +109,22 @@ if(isset($_SESSION["username"])){
 	<!-- Shortlink history table -->
 	<div class="table-responsive">
 		<table id="usertable" class="table table-sm table-dark">
-			<thead>
+			<?php	//Table data, access from API
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, 'http://add.ulur.in/api?token=TOKEN&user=' . $user);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$result = curl_exec($ch);
+
+				$raw =  json_decode($result, true);
+				if(!empty($raw['data'])){
+					echo '<thead>
 				<tr>
 					<th scope="col">Shorturl</th>
 					<th scope="col">hits</th>
 					<th scope="col">date (UTC)</th>
 				</tr>
 			</thead>
-			<tbody>
-			<?php	//Table data, access from API
-				$url = 'http://add.ulur.in/api';
-				$data = array('token' => 'TOKEN', 'view' => $user);
-				
-				$options = array(
-					'http' => array(
-						'method'  => 'POST',
-						'content' => http_build_query($data)
-					)
-				);
-				$context  = stream_context_create($options);
-				$result = file_get_contents($url, false, $context);
-
-				$raw =  json_decode($result, true);
-				if(!empty($raw['data'])){
+			<tbody>';
 					foreach($raw['data'] as $item) {
 						echo '<tr><td><a href="'.$item['url'].'"> ulur.in/'.$item['id'].'</a></td>';
 						echo '<td>'.$item['hits'].'</td>';
@@ -140,11 +133,12 @@ if(isset($_SESSION["username"])){
 						echo('<td><button class="btn btn-danger" data-toggle="modal" data-target="#deleteform" onclick="deleteopen(\'' .$item['id']. '\')">Delete</button></td></tr>');
 						//echo('<td><button class="btn btn-danger" onclick="deletee(\'' .$item['id']. '\')">Delete</button></td></tr>');
 					}
+					echo '</tbody>';
 				}else{
-					echo "<td style='text-align:center'>You didn't have any private shortlink yet</td>";
+					echo "<div style='text-align:center;color:white'>You didn't have any private shortlink yet</div>";
 				}
 			?>
-			</tbody>
+		
 		</table>
 	</div>
 </body>

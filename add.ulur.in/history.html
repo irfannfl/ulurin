@@ -30,10 +30,11 @@
     <!-- Middle body text -->
     <div class="middle" style='height:70px;margin-top:90px'>
         <div id="alret">
-            This is public history (from anonymous user), Create private history by Log-in, you can aslo edit & delete shortlink in <a href="/user">user panel</a>
+            This is public history (from anonymous user),<br>to create private shortlink you must log-in<br>edit & delete shortlink in <a href="/user">user panel</a>
         </div>
     </div>
 
+    <!-- Back button -->
     <div style="width:100%;max-width:800px;margin:0px auto;margin-bottom:10px">
         <button class="btn btn-primary" onclick="location.href='/'"><i class="glyphicon glyphicon-chevron-left"></i> Back</button>
     </div>
@@ -49,31 +50,46 @@
                 </tr>
             </thead>
 
-            <tbody id='tabelnya'>
-                <script>
+            <tbody id='tabelnya'></tbody>
+            <script>
+                var lastdate = "3019-11-02 00:00:00";
+
+                load();
+
+                function load(){
+                    $('#loader').css('display','block');
+                    $('#loadmore').css('display','none');
                     $.ajax({
                         url: getapi(),
-                        type: "POST",
+                        type: "GET",
                         data: {
-                            view: 'public',
+                            user: 'public',
+                            date: lastdate
                         },
-                        success:function(data){
-                            var html = '';
-                            for(var n in data.data) {
-                                html += '<tr><td><a href="' + data.data[n].url + '"> ulur.in/' + data.data[n].id + '</a></td>';
-                                html += '<td>' + data.data[n].hits + '</td>';
-                                html += '<td>' + data.data[n].date + '</td>';
+                        success:function(response){
+                            var html = $('#tabelnya').html();
+                            for(var i in response.data) {
+                                html += '<tr><td><a href="' + response.data[i].url + '"> ulur.in/' + response.data[i].id + '</a></td>';
+                                html += '<td>' + response.data[i].hits + '</td>';
+                                html += '<td>' + response.data[i].date + '</td>';
                             }
+                            lastdate = response.data[i].date;
                             $('#tabelnya').html(html);
+                            $('#loader').css('display','none');
+                            $('#loadmore').css('display','inline');
                         },
                         error:function(xhr){
                             var err = eval("(" + xhr.responseText + ")");
-                            $('#tabelnya').html(err.error);
+                            $('#loader').html(err.error);
                         }
                     });
-                </script>
-            </tbody>
+                }
+            </script>
         </table>
+        <div id='loader'>Loading...</div>
+        <div style="width:100%; text-align: center;">
+            <button class="btn btn-primary" id="loadmore" onclick="load()">Load More</button>
+        </div>
     </div>
 </body>
 </html>

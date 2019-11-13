@@ -4,7 +4,7 @@ a{
 
 a:hover {
 	color: rgb(173, 212, 245);
-  }
+}
 
 table {
 	border-collapse: collapse;
@@ -225,6 +225,7 @@ background-color: rgb(23, 108, 179);
 	max-width:800px;
 	border:1px solid rgb(143, 143, 143);
 	margin:0px auto;
+	margin-bottom: 50px;
 }
 
 td{
@@ -291,8 +292,24 @@ th{
 #publicbutton {
 	width:100%;
 	text-align: center;
-	background-color: rgb(26, 83, 131);
+	background-color: #337ab7;
 	margin-top: 30px;
 	padding:5px;
 	cursor:pointer;
+}
+
+mark{
+	background-color: white;
+}
+
+#loader{
+	text-align: center;
+	color:white;
+	font-size: 20px;
+	margin:20px;
+}
+
+#loadmore{
+	display: none;
+	margin:15px;
 }

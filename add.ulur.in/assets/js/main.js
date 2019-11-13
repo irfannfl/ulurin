@@ -17,7 +17,7 @@ function getuserapi(){
 	}
 }
 
-//Shortlink form action (AJAX to API)
+//--------------------------------- Shortlink input form action -------------------------------------
 function submit(){
 	$('#result b').html('');
 	$('#error').html('');
@@ -47,7 +47,7 @@ function submit(){
 				$('#result').css('display', '');
 				result = data.shortlink;
 				
-				if(addentry){
+				if(addentry){		//Table add new entry
 					var row = document.getElementById("usertable").insertRow(1);
 					row.insertCell(0).innerHTML = "<a href='https://" + data.shortlink + "' >" + data.shortlink + "</a>";
 					row.insertCell(1).innerHTML = "0";
@@ -169,7 +169,7 @@ function check(){
 		url: getuserapi(),
 		type: "GET",
 		success:function(data){		//logged-in
-			var content = '<button onclick="location.href=&#39;backend/user.php?logout=' + window.location.href + '&#39;" type="submit" >Logout</button>';
+			var content = '<button onclick="location.href=&#39;usrapi?logout=' + window.location.href + '&#39;" type="submit" >Logout</button>';
 			$('.login-container').html(content);
 			$('#toptext').html(data.username);
 			$('#toptext').css('display','block');
@@ -204,7 +204,7 @@ function findGetParameter(parameterName) {
 	return result;
 }
 
-//----------------------------------------- MOBILE MENU ---------------------------------------------
+//-------------------------------------- MOBILE MENU BUTTON ------------------------------------------
 
 function menu() {
 	var x = document.getElementById("nav");
