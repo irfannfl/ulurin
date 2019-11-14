@@ -1,0 +1,146 @@
+<!DOCTYPE html><html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Free URL shortener, simple and easy">
+    <meta name="keywords" content="url,Shortener,ulur.in,ulurin,ulur,shortlink">
+	<meta name="theme-color" content="#181818">
+	<title>User Panel | ULUR.IN Shortener</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="assets/js/main.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+</head>
+
+<body onload='check()'>
+	<!-- Modal (popup) -->
+	<div class="modal fade" id="editform" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-body">	<!--Edit form-->
+					<div class="form-group">
+						<label>ID</label>
+						<input class="form-control" id="idedit" readonly>
+					</div>
+					<div class="form-group">
+						<label>URL</label>
+						<input class="form-control" id="urledit">
+					</div>
+					<p id="status">Success!</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					<button type="button" id="editbtn" class="btn btn-primary" onclick="edit()">Edit Shortlink</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="deleteform" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-body">	<!--Delete form-->
+					<p id="deleteid"></p>
+					<p>Are you sure want to delete?</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					<button type="button" id="deletebtn" class="btn btn-danger" onclick="deletee()">Delete</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Top navigation menu -->
+	<div id="nav" class="topnav">
+		<a class="icon" onclick="menu()">
+			Menu<i class="glyphicon glyphicon-menu-hamburger"></i>
+		</a>
+		<a href="/">Home</a>
+		<a class="active" href="user">User Panel</a>
+		<a href="register">Register</a>
+		<a href="dev.html">API Docs</a>
+		<div id="toptext"></div>
+		<div class="login-container"></div>
+	</div>
+	
+	<!-- Shortlink form holder -->
+	<div class="middle" style="margin-top:80px;">
+		<div style="text-align: center">
+			<h2 id="wellcometext">Checking login...</h2>
+			<br>Shortlink created here will <b>not</b> recorded in public history <!-- <a href="http://ulur.in/me">About me</a>-->
+			<br><br><br>
+		</div>
+		<div class="form-group">
+			<label>URL Link</label>
+			<input class="form-control" id="linkInput" placeholder="http://example.com">
+		</div>
+		<div class="form-group">
+			<label>Custom ID (Optional)</label>
+			<input class="form-control" id="idInput" placeholder="id">
+		</div>
+		<button id="tombol" type="submit" onclick="submit();enableAddEntry();" class="btn btn-primary">Shorten!</button>
+		<small id="error" class="form-text text-muted"></small>
+		<div class='loader'>Generating....</div>
+		<p id="result" style="display:none">
+			Shortlink : <b onclick="copy()"></b>
+			<button id="copybtn" class="btn btn-outline-secondary" onclick="copy()">Copy</button>
+		</p>
+	</div>
+	
+	<!-- Shortlink history table -->
+	<div class="table-responsive">
+		<table id="usertable" class="table table-sm table-dark">
+			<thead>
+				<tr>
+					<th scope="col">Shorturl</th>
+					<th scope="col">hits</th>
+					<th scope="col">date (UTC)</th>
+				</tr>
+			</thead>		
+			<tbody id='tabelnya'></tbody>
+			<script>
+				var lastdate = "3019-11-02 00:00:00";
+
+				load();
+
+				function load(){
+					$('#loader').css('display','block');
+					$('#loadmore').css('display','none');
+					$.ajax({
+						url: getapi(),
+						type: "GET",
+						data: {
+							user: 'myself',
+							date: lastdate
+						},
+						success:function(response){
+							var html = $('#tabelnya').html();
+							for(var i in response.data) {
+								html += '<tr><td><a href="' + response.data[i].url + '"> ulur.in/' + response.data[i].id + '</a></td>';
+								html += '<td>' + response.data[i].hits + '</td>';
+								html += '<td>' + response.data[i].date + '</td>';
+								html += '<td><button class="btn btn-success" data-toggle="modal" data-target="#editform" onclick="editopen(\'' + response.data[i].id + '\', \'' + response.data[i].url + '\')">Edit</button></td>';
+								html += '<td><button class="btn btn-danger" data-toggle="modal" data-target="#deleteform" onclick="deleteopen(\'' + response.data[i].id + '\')">Delete</button></td></tr>';
+							}
+							lastdate = response.data[i].date;
+							$('#tabelnya').html(html);
+							$('#loader').css('display','none');
+							$('#loadmore').css('display','inline');
+						},
+						error:function(xhr){
+							var err = eval("(" + xhr.responseText + ")");
+							$('#loader').html(err.error);
+						}
+					});
+				}
+			</script>
+		</table>
+        <div id='loader'>Loading...</div>
+        <div style="width:100%; text-align: center;">
+            <button class="btn btn-primary" id="loadmore" onclick="load()">Load More</button>
+        </div>
+	</div>
+</body>
+</html>

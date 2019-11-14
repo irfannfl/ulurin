@@ -172,12 +172,19 @@ function check(){
 			var content = '<button onclick="location.href=&#39;usrapi?logout=' + window.location.href + '&#39;" type="submit" >Logout</button>';
 			$('.login-container').html(content);
 			$('#toptext').html(data.username);
+			if(window.location.href.indexOf('ulur.in/user') !== -1){		//For USER PANEL Username Display
+				$('#wellcometext').html("user panel " + data.username);
+			}
 			$('#toptext').css('display','block');
 		},
 		error:function(){	//not logged-in
 			var content = '<form action="login" method="POST"><input id="usern" type="text" placeholder="Username" name="username" required> <input type="hidden" name="origin" value="' + window.location.href +'"><input id="passw" type="password" placeholder="Password" name="password" required> <button type="submit">Login</button></form>';
 			$('.login-container').html(content);
 			var error = findGetParameter('err');
+			if(window.location.href.indexOf('ulur.in/user') !== -1){		//For USER PANEL error view
+				$('.middle').html("<div style='text-align: center'>You need to log-in before viewing this page!<br>Don't have account? you can <a href='register'>register</a> for free.<br><br>or use this demo account<br>user : umum<br>password : 123456</div>");
+				$('.table-responsive').remove();
+			}
 			if(error){
 				$('#passw').css('border','1px solid red');
 				$('#usern').css('border','1px solid red');

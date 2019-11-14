@@ -18,7 +18,9 @@ if (isset($_GET['user'])) {
 
 	//Validasi authorisasi saat melihat history selain public
 	if($user != 'public'){
-		if ($_GET['token'] != 'TOKEN'){
+		if (isset($_SESSION['username'])){
+			$user = $_SESSION['username'];
+		} else{
 			$err = 'Authorization failed!'; goto end;
 		}
 	}
