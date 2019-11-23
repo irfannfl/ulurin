@@ -141,15 +141,15 @@ foreach($raw['data'] as $item) {
 			<p>HTTP/S REQUEST <mark><b>GET</b></mark></p>
 			<h2>Parameters</h2>
 			<p><b>user : </b>'public' untuk melihat history publik, username untuk private history</p>
-			<p><b>date : </b>history sebelum waktu, biasa untuk pagging (default=3019-11-02 00:00:00)</p>
-			<p><b>token : </b>secret token untuk mengakses private history (default=empty)</p>
+			<p><b>maxdate : </b>max date of entry, biasa untuk pagging (default=3019-11-02 00:00:00)</p>
+			<p><b>maxhits : </b>max hits of entry, biasa untuk pagging, jika di set, urutan berdasar hits (default=empty)</p>
 			<br>
 			<h2>Response</h2>
 			<p><b>data : </b>JSON data, history user latest 20 item before date (structure lihat di API tester)</p>
 			<p><b>error : </b>pesan error, berikut daftarnya:</p>
 			<p>"Spam terdeteksi!" = API access limit reached, tunggu sekitar 3 menit</p>
-			<p>"Authorization failed!" = invalid token saat request private history</p>
-			<p>"no request" = tidak ada request data</p>
+			<p>"Authorization failed!" = invalid SESSION saat request private history</p>
+			<p>"no request" = tidak ada request parameter</p>
 			<br>
 			<h2>API Limits</h2>
 			<p>Max 20 requests per 3 menit</p>

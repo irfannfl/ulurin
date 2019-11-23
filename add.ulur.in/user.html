@@ -73,19 +73,20 @@
 			<br><br><br>
 		</div>
 		<div class="form-group">
-			<label>URL Link</label>
-			<input class="form-control" id="linkInput" placeholder="http://example.com">
+			<input class="form-control" id="linkInput" placeholder="Your Link"><button id="tombol" type="submit" onclick="submit()" class="btn btn-primary">Shorten!</button>
 		</div>
-		<div class="form-group">
-			<label>Custom ID (Optional)</label>
+		<input class="form-check-input" type="checkbox" id="myCheck" onclick="customize()">
+		<label id="customizetext" class="form-check-label" for="myCheck">Customize </label>
+		<div id="customizepart" class="form-group">
+			<b>http://ulur.in/</b>
 			<input class="form-control" id="idInput" placeholder="id">
 		</div>
-		<button id="tombol" type="submit" onclick="submit();enableAddEntry();" class="btn btn-primary">Shorten!</button>
 		<small id="error" class="form-text text-muted"></small>
 		<div class='loader'>Generating....</div>
 		<p id="result" style="display:none">
 			Shortlink : <b onclick="copy()"></b>
 			<button id="copybtn" class="btn btn-outline-secondary" onclick="copy()">Copy</button>
+			<a href="javascript:void(%20window.open(&#39;https://www.facebook.com/sharer.php?u=http://&#39; + result,%20&#39;blank&#39;,&#39;scrollbars=yes,toolbar=no,width=600,height=470&#39;))"><img src="https://i.imgur.com/LupkEVD.png"/></a><a href="javascript:void(%20window.open(&#39;https://twitter.com/share?url=http://&#39; + result,%20&#39;blank&#39;,&#39;scrollbars=yes,toolbar=no,width=600,height=410&#39;))"><img src="https://i.imgur.com/4N18g4u.png"/></a>
 		</p>
 	</div>
 	
@@ -94,16 +95,39 @@
 		<table id="usertable" class="table table-sm table-dark">
 			<thead>
 				<tr>
-					<th scope="col">Shorturl</th>
-					<th scope="col">hits</th>
-					<th scope="col">date (UTC)</th>
+					<th scope="col">Shorturl <input class="form-control searchuser" id="searchbar" placeholder="Search..."><button class="btn btn-primary" onclick="search()"><i class="glyphicon glyphicon-search"></i></button></th>
+					<th scope="col"><a onclick="refresh('hits')">hits</a></th>
+                    <th scope="col"><a onclick="refresh('date')">date (UTC)</a></th>
+					<th scope="col">Option</th>
 				</tr>
 			</thead>		
 			<tbody id='tabelnya'></tbody>
 			<script>
-				var lastdate = "3019-11-02 00:00:00";
+                var lastdate = "3019-11-02 00:00:00";
+                var lasthits = "9999999";
+                var params;
 
-				load();
+                refresh('date');
+
+                function refresh(mode){
+                    if(mode == 'date'){
+                        params = {user: 'myself', maxdate: lastdate};
+                    }else if(mode == 'hits'){
+                        params = {user: 'myself', maxhits: lasthits};
+					}
+					$('#loader').html('Loading...');
+                    $('#tabelnya').html('');
+                    load();
+				}
+				
+				function search(){
+                    if($('#searchbar').val() != ''){
+                        var queryinput = $('#searchbar').val();
+                        params = {user: 'myself', maxdate: lastdate, query: queryinput};
+                        $('#tabelnya').html('');
+                        load();
+                    }
+                }
 
 				function load(){
 					$('#loader').css('display','block');
@@ -111,20 +135,22 @@
 					$.ajax({
 						url: getapi(),
 						type: "GET",
-						data: {
-							user: 'myself',
-							date: lastdate
-						},
+						data: params,
 						success:function(response){
 							var html = $('#tabelnya').html();
 							for(var i in response.data) {
-								html += '<tr><td><a href="' + response.data[i].url + '"> ulur.in/' + response.data[i].id + '</a></td>';
-								html += '<td>' + response.data[i].hits + '</td>';
-								html += '<td>' + response.data[i].date + '</td>';
-								html += '<td><button class="btn btn-success" data-toggle="modal" data-target="#editform" onclick="editopen(\'' + response.data[i].id + '\', \'' + response.data[i].url + '\')">Edit</button></td>';
-								html += '<td><button class="btn btn-danger" data-toggle="modal" data-target="#deleteform" onclick="deleteopen(\'' + response.data[i].id + '\')">Delete</button></td></tr>';
+								html += '<tr><td><a target="_blank" href="' + response.data[i].url + '"> ulur.in/' + response.data[i].id + '</a><br><div class="urldisplay2">' + response.data[i].url + '</div></td>';
+								html += '<td><div class="hitscolumn">' + response.data[i].hits + '</div></td>';
+								html += '<td><div class="datecolumn">' + response.data[i].date + '</div></td>';
+								html += '<td><button class="btn btn-success" data-toggle="modal" data-target="#editform" onclick="editopen(\'' + response.data[i].id + '\', \'' + response.data[i].url + '\')">Edit</button>  ';
+								html += '<button class="btn btn-danger" data-toggle="modal" data-target="#deleteform" onclick="deleteopen(\'' + response.data[i].id + '\')">Delete</button></td></tr>';
 							}
-							lastdate = response.data[i].date;
+							if (typeof params.maxdate != "undefined") {
+                                params.maxdate = response.data[i].date;
+                            }
+                            if (typeof params.maxhits != "undefined") {
+                                params.maxhits = response.data[i].hits;
+                            }
 							$('#tabelnya').html(html);
 							$('#loader').css('display','none');
 							$('#loadmore').css('display','inline');

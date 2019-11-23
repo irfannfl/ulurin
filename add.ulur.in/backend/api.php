@@ -12,8 +12,8 @@ try {
 }
 
 if (isset($_GET['user'])) {
-
-	//=============== Bagian view data =============== (Public API)
+	
+	//================== Bagian view data =================== (Public API)
 	$user = $_GET['user'];
 
 	//Validasi authorisasi saat melihat history selain public
@@ -24,32 +24,66 @@ if (isset($_GET['user'])) {
 			$err = 'Authorization failed!'; goto end;
 		}
 	}
-	if (isset($_GET['date'])){
-		$dateinput = $_GET['date'];
+	if (isset($_GET['maxdate'])){
+		$state = $_GET['maxdate'];
 	}else{
-		$dateinput = "3019-11-02 00:00:00";		//default
+		$state = "3019-11-02 00:00:00";		//default
 	}
 
 	require "sql.php";
-	
-	$query = $db->prepare('SELECT id, url, date, hits FROM redirect WHERE user = ? AND date < ? ORDER BY date DESC LIMIT 20');
-	$query->bind_param('ss', $user, $dateinput);
-	if ($query->execute()) {
-		$query->bind_result($id, $url, $date, $hits);
 
-		$count = 1;		//awal nomor entri tabel
-		$list = array();
-		while ($query->fetch()) {
-			$list[$count++] = ['id' => $id, 'url' => $url, 'hits' => $hits, 'date' => $date];
+	//view data with query
+	if (!empty($_GET['query'])) {
+
+		$searchquery = '%'.$_GET['query'].'%';
+
+		$query = $db->prepare('SELECT id, url, date, hits FROM redirect WHERE user = ? AND date < ? AND (url LIKE ? OR id LIKE ?) ORDER BY date DESC LIMIT 20');
+		$query->bind_param('ssss', $user, $state, $searchquery, $searchquery);
+		if ($query->execute()) {
+			$query->bind_result($id, $url, $date, $hits);
+
+			$count = 1;		//awal nomor entri tabel
+			$list = array();
+			while ($query->fetch()) {
+				$list[$count++] = ['id' => $id, 'url' => $url, 'hits' => $hits, 'date' => $date];
+			}
+		}else {
+			$err = 'Gagal membaca database';
 		}
-	}else {
-		$err = 'Gagal membaca database';
-	}
-	$query->close();
-	$db->close();
+		$query->close();
+		$db->close();
 
-	if (empty($list)) {
-		$err = "no more data"; goto end;
+		if (empty($list)) {
+			$err = "no more data";
+		}
+	
+	//view data without query
+	}else{
+		if(isset($_GET['maxhits'])){
+			$state = $_GET['maxhits'];
+			$command = 'SELECT id, url, date, hits FROM redirect WHERE user = ? AND hits < ? ORDER BY hits DESC LIMIT 20';
+		}else{
+			$command = 'SELECT id, url, date, hits FROM redirect WHERE user = ? AND date < ? ORDER BY date DESC LIMIT 20';
+		}
+		$query = $db->prepare($command);
+		$query->bind_param('ss', $user, $state);
+		if ($query->execute()) {
+			$query->bind_result($id, $url, $date, $hits);
+
+			$count = 1;		//awal nomor entri tabel
+			$list = array();
+			while ($query->fetch()) {
+				$list[$count++] = ['id' => $id, 'url' => $url, 'hits' => $hits, 'date' => $date];
+			}
+		}else {
+			$err = 'Gagal membaca database';
+		}
+		$query->close();
+		$db->close();
+
+		if (empty($list)) {
+			$err = "no more data";
+		}
 	}
 
 } else if (isset($_POST['delete'])) {

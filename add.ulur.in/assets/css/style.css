@@ -1,5 +1,6 @@
 a{
 	color:rgb(138, 198, 247);
+	cursor: pointer;
 }
 
 a:hover {
@@ -70,6 +71,14 @@ body{
 input{
 	transition: ease-in-out all 300ms;
 }
+
+/*
+.form-group input, textarea{
+	border: 1px solid rgb(70, 70, 70) !important;
+	background-color: #d6d6d6 !important;
+}
+*/
+
 .middle form input[type="email"]{
 	height: 2.5em;
 	color: #34495e;
@@ -85,6 +94,11 @@ input{
 	font: inherit;
 	font-weight: 300;
 	font-size:20px;
+}
+
+#result img{
+	max-width: 20px;
+	margin:4px;
 }
 
 #result b{
@@ -219,6 +233,14 @@ background-color: rgb(23, 108, 179);
 	#toptext{
 		display: none !important;
 	}
+
+	.urldisplay{
+		width: 250px !important;
+	}
+
+	.urldisplay2{
+		width: 200px !important;
+	}
 }
 
 .table-responsive{
@@ -312,4 +334,64 @@ mark{
 #loadmore{
 	display: none;
 	margin:15px;
+}
+
+.urldisplay{
+	font-size:11px;
+	width: 440px;
+	overflow: hidden;
+	color:rgb(163, 163, 163);
+}
+
+.urldisplay2{
+	font-size:11px;
+	width: 370px;
+	overflow: hidden;
+	color:rgb(163, 163, 163);
+}
+
+.datecolumn{
+	font-size:14px;
+	margin-top: 8px;
+}
+
+.hitscolumn{
+	margin-top: 8px;
+}
+
+#searchbar{
+	width: 300px;
+	display: inline;
+}
+
+.searchuser{
+	background-color: #696969 !important;
+	color: white !important;
+	border-color: rgb(31, 31, 31);
+	width: calc(100% - 150px) !important;
+}
+
+#customizepart{
+	display: none;
+	width:auto;
+}
+
+#idInput{
+	display: inline;
+	width:190px;
+	background-color: #696969 !important;
+	border-color: rgb(31, 31, 31);
+	color: white !important;
+	height: 23px;
+	padding-left: 4px;
+}
+
+#customizetext{
+	font-weight: lighter;
+	font-size: 16px;
+}
+
+#linkInput{
+	display: inline;
+	width:320px;
 }

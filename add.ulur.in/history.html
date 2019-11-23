@@ -28,7 +28,7 @@
     </div>
     
     <!-- Middle body text -->
-    <div class="middle" style='height:70px;margin-top:90px'>
+    <div class="middle" style='height:70px;margin-top:90px;margin-bottom: 20px;'>
         <div id="alret">
             This is public history (from anonymous user),<br>to create private shortlink you must log-in<br>edit & delete shortlink in <a href="/user">user panel</a>
         </div>
@@ -37,6 +37,9 @@
     <!-- Back button -->
     <div style="width:100%;max-width:800px;margin:0px auto;margin-bottom:10px">
         <button class="btn btn-primary" onclick="location.href='/'"><i class="glyphicon glyphicon-chevron-left"></i> Back</button>
+        <div style="float:right">
+            <input class="form-control" id="searchbar" placeholder="Search..."><button class="btn btn-primary" onclick="search()"><i class="glyphicon glyphicon-search"></i></button>
+        </div>
     </div>
 
     <!-- Shortlink history table -->
@@ -45,16 +48,38 @@
             <thead>
                 <tr>
                     <th scope="col">Shorturl</th>
-                    <th scope="col">hits</th>
-                    <th scope="col">date (UTC)</th>
+                    <th scope="col"><a onclick="refresh('hits')">hits</a></th>
+                    <th scope="col"><a onclick="refresh('date')">date (UTC)</a></th>
                 </tr>
             </thead>
 
             <tbody id='tabelnya'></tbody>
             <script>
                 var lastdate = "3019-11-02 00:00:00";
+                var lasthits = "9999999";
+                var params;
 
-                load();
+                refresh('date');
+
+                function refresh(mode){
+                    if(mode == 'date'){
+                        params = {user: 'public', maxdate: lastdate};
+                    }else if(mode == 'hits'){
+                        params = {user: 'public', maxhits: lasthits};
+                    }
+                    $('#loader').html('Loading...');
+                    $('#tabelnya').html('');
+                    load();
+                }
+
+                function search(){
+                    if($('#searchbar').val() != ''){
+                        var queryinput = $('#searchbar').val();
+                        params = {user: 'public', maxdate: lastdate, query: queryinput};
+                        $('#tabelnya').html('');
+                        load();
+                    }
+                }
 
                 function load(){
                     $('#loader').css('display','block');
@@ -62,18 +87,20 @@
                     $.ajax({
                         url: getapi(),
                         type: "GET",
-                        data: {
-                            user: 'public',
-                            date: lastdate
-                        },
+                        data: params,
                         success:function(response){
                             var html = $('#tabelnya').html();
                             for(var i in response.data) {
-                                html += '<tr><td><a href="' + response.data[i].url + '"> ulur.in/' + response.data[i].id + '</a></td>';
-                                html += '<td>' + response.data[i].hits + '</td>';
-                                html += '<td>' + response.data[i].date + '</td>';
+                                html += '<tr><td><a href="' + response.data[i].url + '"> ulur.in/' + response.data[i].id + '</a><br><div class="urldisplay">' + response.data[i].url + '</div></td>';
+                                html += '<td><div class="hitscolumn">' + response.data[i].hits + '</div></td>';
+                                html += '<td><div class="datecolumn">' + response.data[i].date + '</div></td>';
                             }
-                            lastdate = response.data[i].date;
+                            if (typeof params.maxdate != "undefined") {
+                                params.maxdate = response.data[i].date;
+                            }
+                            if (typeof params.maxhits != "undefined") {
+                                params.maxhits = response.data[i].hits;
+                            }
                             $('#tabelnya').html(html);
                             $('#loader').css('display','none');
                             $('#loadmore').css('display','inline');

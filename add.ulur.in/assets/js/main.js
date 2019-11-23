@@ -52,8 +52,7 @@ function submit(){
 					row.insertCell(0).innerHTML = "<a href='https://" + data.shortlink + "' >" + data.shortlink + "</a>";
 					row.insertCell(1).innerHTML = "0";
 					row.insertCell(2);
-					row.insertCell(3).innerHTML = "<button class='btn btn-success' data-toggle='modal' data-target='#editform' onclick='editopen(&quot;" +  data.shortlink.split('/')[1] + "&quot;,&quot;" + $('#linkInput').val() + "&quot;)'>Edit</button>";
-					row.insertCell(4).innerHTML = "<button class='btn btn-danger' data-toggle='modal' data-target='#deleteform' onclick='deleteopen(&quot;" +  data.shortlink.split('/')[1] + "&quot;)'>Delete</button>";
+					row.insertCell(3).innerHTML = "<button class='btn btn-success' data-toggle='modal' data-target='#editform' onclick='editopen(&quot;" +  data.shortlink.split('/')[1] + "&quot;,&quot;" + $('#linkInput').val() + "&quot;)'>Edit</button>  <button class='btn btn-danger' data-toggle='modal' data-target='#deleteform' onclick='deleteopen(&quot;" +  data.shortlink.split('/')[1] + "&quot;)'>Delete</button>";
 					addentry = false;
 				}
 			},
@@ -69,7 +68,7 @@ function submit(){
 			}
 		});
 	}else{
-		$('#error').html("Harap isi dulu url input!");
+		$('#error').html("Harap isi url input!");
 	}
 }
 
@@ -221,3 +220,16 @@ function menu() {
 	  x.className = "topnav";
 	}
 }
+
+//----------------------------- OTHER ---------------------------
+function customize() {
+	var checkBox = document.getElementById("myCheck");
+	var text = document.getElementById("customizepart");
+  
+	if (checkBox.checked == true){
+	  text.style.display = "inline";
+	} else {
+	  text.style.display = "none";
+	}
+  }
+  

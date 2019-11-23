@@ -28,24 +28,26 @@
 
 	<div class="middle">
 		<div style="text-align: center">
-			Wellcome to ULUR.IN Shortener
+			<span style="font-size:40px">ULUR.IN</span><br>
+			URL Shortener
 			<!-- <br><a href="dev.html">API docs</a> | <a href="history">Public History</a> <a target="_blank" href="http://ulur.in/me">About me</a>	
-		-->	<br><br><br>
+		-->	<br><br>
 		</div>
 		<div class="form-group">
-			<label>URL Link</label>
-			<input class="form-control" id="linkInput" placeholder="http://example.com">
+			<input class="form-control" id="linkInput" placeholder="Your Link"><button id="tombol" type="submit" onclick="submit()" class="btn btn-primary">Shorten!</button>
 		</div>
-		<div class="form-group">
-			<label>Custom ID (Optional)</label>
+		<input class="form-check-input" type="checkbox" id="myCheck" onclick="customize()">
+		<label id="customizetext" class="form-check-label" for="myCheck">Customize</label>
+		<div id="customizepart" class="form-group">
+			<b>http://ulur.in/</b>
 			<input class="form-control" id="idInput" placeholder="id">
 		</div>
-		<button id="tombol" type="submit" onclick="submit()" class="btn btn-primary">Shorten!</button>
 		<small id="error" class="form-text text-muted"></small>
 		<div class='loader'>Generating....</div>
 		<p id="result" style="display:none">
 			Shortlink : <b onclick="copy()"></b>
-			<button id="copybtn" class="btn btn-outline-secondary" onclick="copy()">Copy</button>
+			<button id="copybtn" class="btn btn-outline-secondary" onclick="copy()">Copy</button><br>
+			<a href="javascript:void(%20window.open(&#39;https://www.facebook.com/sharer.php?u=http://&#39; + result,%20&#39;blank&#39;,&#39;scrollbars=yes,toolbar=no,width=600,height=470&#39;))"><img src="https://i.imgur.com/LupkEVD.png"/></a><a href="javascript:void(%20window.open(&#39;https://twitter.com/share?url=http://&#39; + result,%20&#39;blank&#39;,&#39;scrollbars=yes,toolbar=no,width=600,height=410&#39;))"><img src="https://i.imgur.com/4N18g4u.png"/></a>
 		</p>
 		<div id="publicbutton" onclick="location.href='/history'">Public History</div>
 	</div>
