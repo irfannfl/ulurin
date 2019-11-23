@@ -1,10 +1,4 @@
 <?PHP
-session_start();
-
-if(isset($_SESSION["username"])){
-	$user = $_SESSION["username"];
-}
-
 if(isset($_GET['logout'])){
     //Destory session
     $_SESSION = array();
@@ -27,9 +21,10 @@ if(isset($_SERVER['HTTP_ORIGIN'])){
 	header('Access-Control-Allow-Credentials: true');
 }
 
-if(isset($user)){
-    $data = ['username' => $user];
-    echo json_encode($data);
+session_start();
+if(isset($_SESSION["username"])){
+    $data = ['username' => $_SESSION["username"]];
+	echo json_encode($data);
 }else{
     http_response_code(400);
     echo 'not logged-in';
