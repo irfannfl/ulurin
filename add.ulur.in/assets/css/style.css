@@ -367,8 +367,9 @@ mark{
 .searchuser{
 	background-color: #696969 !important;
 	color: white !important;
+	margin-left: 15px;
 	border-color: rgb(31, 31, 31);
-	width: calc(100% - 150px) !important;
+	width: calc(100% - 140px) !important;
 }
 
 #customizepart{
@@ -389,6 +390,7 @@ mark{
 #customizetext{
 	font-weight: lighter;
 	font-size: 16px;
+	cursor: pointer;
 }
 
 #linkInput{

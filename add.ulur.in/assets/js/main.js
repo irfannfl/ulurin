@@ -72,6 +72,18 @@ function submit(){
 	}
 }
 
+//Customize button
+function customize() {
+	var checkBox = document.getElementById("myCheck");
+	var text = document.getElementById("customizepart");
+
+	if (checkBox.checked == true){
+		text.style.display = "inline";
+	} else {
+		text.style.display = "none";
+	}
+}
+
 //Copy hasil shortlink
 function copy() {
 	var fullLink = document.createElement('input');
@@ -220,16 +232,4 @@ function menu() {
 	  x.className = "topnav";
 	}
 }
-
-//----------------------------- OTHER ---------------------------
-function customize() {
-	var checkBox = document.getElementById("myCheck");
-	var text = document.getElementById("customizepart");
-  
-	if (checkBox.checked == true){
-	  text.style.display = "inline";
-	} else {
-	  text.style.display = "none";
-	}
-  }
   
