@@ -73,19 +73,19 @@
 			<br><br><br>
 		</div>
 		<div class="form-group">
-			<input class="form-control" id="linkInput" placeholder="Your Link"><button id="tombol" type="submit" onclick="submit()" class="btn btn-primary">Shorten!</button>
+			<input class="form-control" id="linkInput" placeholder="Your Link"><button id="tombol" type="submit" onclick="submit();enableAddEntry();" class="btn btn-primary">Shorten!</button>
 		</div>
 		<input class="form-check-input" type="checkbox" id="myCheck" onclick="customize()">
 		<label id="customizetext" class="form-check-label" for="myCheck">Customize </label>
 		<div id="customizepart" class="form-group">
 			<b>http://ulur.in/</b>
 			<input class="form-control" id="idInput" placeholder="id">
-		</div>
+		</div><br><br>
 		<small id="error" class="form-text text-muted"></small>
 		<div class='loader'>Generating....</div>
 		<p id="result" style="display:none">
 			Shortlink : <b onclick="copy()"></b>
-			<button id="copybtn" class="btn btn-outline-secondary" onclick="copy()">Copy</button>
+			<button id="copybtn" class="btn btn-outline-secondary" onclick="copy()">Copy</button><br>
 			<a href="javascript:void(%20window.open(&#39;https://www.facebook.com/sharer.php?u=http://&#39; + result,%20&#39;blank&#39;,&#39;scrollbars=yes,toolbar=no,width=600,height=470&#39;))"><img src="https://i.imgur.com/LupkEVD.png"/></a><a href="javascript:void(%20window.open(&#39;https://twitter.com/share?url=http://&#39; + result,%20&#39;blank&#39;,&#39;scrollbars=yes,toolbar=no,width=600,height=410&#39;))"><img src="https://i.imgur.com/4N18g4u.png"/></a>
 		</p>
 	</div>
