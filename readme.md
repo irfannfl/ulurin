@@ -11,3 +11,5 @@ https://ulur.in
 5. edit API url in "/assets/js/main.js" into 'example.com/api'.
 6. edit index.php in home directory "require sql.php" make sure path is correct based on your local dir.
 7. edit SITE_KEY and SECRET_TOKEN for reCAPTCHA from your own reCAPTCHA account (or just delete reCAPTCHA code).
+
+Author : naufalirfan
