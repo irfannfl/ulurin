@@ -3,8 +3,8 @@ session_start();
 include "ratelimiter.php";
 
 $rateLimiter = new RateLimiter($_SERVER["REMOTE_ADDR"]);
-$limit = 20;			//	limit jumlah request per $minutes
-$minutes = 3;			//	periode pengecekan dalam menit
+$limit = 15;			//	limit jumlah request per $minutes
+$minutes = 2;			//	periode pengecekan dalam menit
 try {
 	$rateLimiter->limitRequestsInMinutes($limit, $minutes);
 } catch (RateExceededException $e) {
