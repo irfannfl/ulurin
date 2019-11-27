@@ -1,5 +1,5 @@
 # ULUR IN
-Simple URL shortener for apache
+Simple URL shortener for apache with PHP & MySQL
 
 https://ulur.in
 
