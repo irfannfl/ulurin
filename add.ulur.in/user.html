@@ -124,6 +124,7 @@
                     if($('#searchbar').val() != ''){
                         var queryinput = $('#searchbar').val();
                         params = {user: 'myself', maxdate: lastdate, query: queryinput};
+						$('#loader').html('Loading...');
                         $('#tabelnya').html('');
                         load();
                     }

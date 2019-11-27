@@ -76,6 +76,7 @@
                     if($('#searchbar').val() != ''){
                         var queryinput = $('#searchbar').val();
                         params = {user: 'public', maxdate: lastdate, query: queryinput};
+                        $('#loader').html('Loading...');
                         $('#tabelnya').html('');
                         load();
                     }
