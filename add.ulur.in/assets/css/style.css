@@ -18,6 +18,10 @@ body{
 	font-family: 'Lato',"Open Sans", Arial;
 }
 
+html{
+	background: #424242;
+}
+
 #error{
 	color:#ff8585;
 	display:block;
@@ -361,7 +365,7 @@ mark{
 
 #searchbar{
 	width: 250px;
-	display: inline;
+	display: inline-block;
 }
 
 .searchuser{
@@ -379,11 +383,11 @@ mark{
 
 #idInput{
 	display: inline;
-	width:190px;
+	max-width:190px;
 	background-color: #696969 !important;
 	border-color: rgb(31, 31, 31);
 	color: white !important;
-	height: 23px;
+	max-height: 23px;
 	padding-left: 4px;
 }
 
@@ -395,5 +399,5 @@ mark{
 
 #linkInput{
 	display: inline;
-	width:320px;
+	max-width:320px;
 }
